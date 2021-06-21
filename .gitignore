@@ -1,0 +1,8 @@
+.vs
+
+packages
+TestResults
+**/bin
+**/obj
+**.suo
+**.pfx
