@@ -13,7 +13,7 @@ namespace CAD.Tests
     public class CADFileTests
     {
         private static CADFile reader;
-        private const string filePath = "../../../test1-cad4.cad";
+        private const string filePath = "../../../files/test1-cad4.cad";
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
@@ -255,7 +255,7 @@ namespace CAD.Tests
         [TestMethod]
         public void ThrowsExceptionWhenVersionNot4()
         {
-            byte[] contents = File.ReadAllBytes("../../../test2-cad2.cad");
+            byte[] contents = File.ReadAllBytes("../../../files/test2-cad2.cad");
 
             Assert.IsTrue(contents.Length > 0);
 
