@@ -13,6 +13,10 @@ namespace CAD.Geometry
         /// геометрията от пространственият индекс и обекта от CAD файла
         /// </summary>
         string GUID { get; set; }
+        /// <summary>
+        /// Координатна система
+        /// </summary>
+        CoordinateSystem CoordinateSystem { get; set; }
     }
 
     /// <summary>

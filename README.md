@@ -18,6 +18,10 @@ using CAD.Nomenclature;
 ...
 // read a CAD file
 CADFile file = new CADFile("path/to/cad/file");
+file.ReadFile(Encoding...);
+
+// check log message
+file.Log;
 
 // get CAD file metadata
 CADFileInfo info = file.FileInfo;

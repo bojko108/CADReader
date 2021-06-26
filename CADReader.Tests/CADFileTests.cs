@@ -1,4 +1,6 @@
 ﻿using CAD.Entity;
+using CAD.Geometry;
+using CAD.Internals;
 using CAD.Nomenclature;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -16,8 +18,17 @@ namespace CAD.Tests
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-            reader = new CADFile(filePath);
-            Assert.IsNotNull(reader);
+            if (context.TestName.Equals(nameof(ThrowsExceptionWhenVersionNot4))
+                || context.TestName.Equals(nameof(ReadsCADFileFromMemory)))
+            {
+
+            }
+            else
+            {
+                reader = new CADFile(filePath);
+                Assert.IsNotNull(reader);
+                reader.ReadFile();
+            }
         }
 
         [TestMethod]
@@ -29,8 +40,9 @@ namespace CAD.Tests
 
             CADFile test = new CADFile(contents);
             Assert.IsNotNull(test);
+            test.ReadFile();
 
-            CADFileInfo info = reader.FileInfo;
+            CADFileInfo info = test.FileInfo;
             Assert.IsNotNull(info);
             Assert.AreEqual("4.00", info.Version);
             Assert.AreEqual("37914", info.EKATTE);
@@ -39,13 +51,28 @@ namespace CAD.Tests
             Assert.AreEqual("\"ГЕОМЕРА М+Р\" ЕООД", info.Firm);
             Assert.AreEqual(4589000.000, info.ReferencePoint.N);
             Assert.AreEqual(8505000.000, info.ReferencePoint.E);
-            Assert.AreEqual(261.000, info.Window.MinX);
-            Assert.AreEqual(645.000, info.Window.MinY);
-            Assert.AreEqual(2198.000, info.Window.MaxX);
-            Assert.AreEqual(2425.000, info.Window.MaxY);
+            Assert.AreEqual(4589000.000 + 261.000, info.Window.MinN);
+            Assert.AreEqual(8505000.000 + 645.000, info.Window.MinE);
+            Assert.AreEqual(4589000.000 + 2198.000, info.Window.MaxN);
+            Assert.AreEqual(8505000.000 + 2425.000, info.Window.MaxE);
             Assert.AreEqual("1970, Балтийска, K9", info.Coordtype);
             Assert.AreEqual(CADContentType.PART, info.Contents);
             Assert.AreEqual("", info.Comment);
+        }
+
+        [TestMethod]
+        public void ChangesCADFileProjection()
+        {
+            CADFile cad = new CADFile(filePath, CoordinateSystem.WGS84_GEOGRAPHIC);
+            Assert.IsNotNull(cad);
+            cad.ReadFile();
+            Assert.IsNotNull(cad.FileInfo);
+
+            Point referencePoint = cad.FileInfo.ReferencePoint;
+            Assert.AreEqual(CoordinateSystem.WGS84_GEOGRAPHIC, referencePoint.CoordinateSystem);
+
+            CADPoint point = cad[CADLayerType.CADASTER].Entities[0] as CADPoint;
+            Assert.AreEqual(CoordinateSystem.WGS84_GEOGRAPHIC, point.Geometry.CoordinateSystem);
         }
 
         [TestMethod]
@@ -75,10 +102,10 @@ namespace CAD.Tests
             Assert.AreEqual("\"ГЕОМЕРА М+Р\" ЕООД", info.Firm);
             Assert.AreEqual(4589000.000, info.ReferencePoint.N);
             Assert.AreEqual(8505000.000, info.ReferencePoint.E);
-            Assert.AreEqual(261.000, info.Window.MinX);
-            Assert.AreEqual(645.000, info.Window.MinY);
-            Assert.AreEqual(2198.000, info.Window.MaxX);
-            Assert.AreEqual(2425.000, info.Window.MaxY);
+            Assert.AreEqual(4589000.000 + 261.000, info.Window.MinN);
+            Assert.AreEqual(8505000.000 + 645.000, info.Window.MinE);
+            Assert.AreEqual(4589000.000 + 2198.000, info.Window.MaxN);
+            Assert.AreEqual(8505000.000 + 2425.000, info.Window.MaxE);
             Assert.AreEqual("1970, Балтийска, K9", info.Coordtype);
             Assert.AreEqual(CADContentType.PART, info.Contents);
             Assert.AreEqual("", info.Comment);
@@ -236,6 +263,7 @@ namespace CAD.Tests
             {
                 CADFile test = new CADFile(contents);
                 Assert.IsNotNull(test);
+                test.ReadFile();
             }, "Only CAD files v4 are supported");
         }
 

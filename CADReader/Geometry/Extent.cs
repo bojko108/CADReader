@@ -1,28 +1,41 @@
-﻿using RBush;
+﻿using BojkoSoft.Transformations;
+using RBush;
 
 namespace CAD.Geometry
 {
     /// <summary>
     /// Представлява правоъгълник
     /// </summary>
-    public class Extent
+    public class Extent : IExtent
     {
         /// <summary>
         /// минимална стойност за Northing (x)
         /// </summary>
-        public double MinN { get; private set; }
+        public double MinN { get; set; }
         /// <summary>
         /// минимална стойност за Easting (y)
         /// </summary>
-        public double MinE { get; private set; }
+        public double MinE { get; set; }
         /// <summary>
         /// максимална стойност за Northing (x)
         /// </summary>
-        public double MaxN { get; private set; }
+        public double MaxN { get; set; }
         /// <summary>
         /// максимална стойност за Easting (y)
         /// </summary>
-        public double MaxE { get; private set; }
+        public double MaxE { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public double Width { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public double Height { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsEmpty { get; private set; }
 
         /// <summary>
         /// Създава нов обхват с посочените параметри
@@ -37,6 +50,8 @@ namespace CAD.Geometry
             this.MinE = minE;
             this.MaxN = maxN;
             this.MaxE = maxE;
+
+            this.Expand(0);
         }
 
         /// <summary>
@@ -45,5 +60,35 @@ namespace CAD.Geometry
         /// <returns></returns>
         internal Envelope ToEnvelope()
             => new Envelope(this.MinE, this.MinN, this.MaxE, this.MaxN);
+
+        /// <summary>
+        /// Converts this object to <see cref="Extent"/>
+        /// </summary>
+        /// <returns></returns>
+        internal static Extent FromEnvelope(Envelope envelope)
+            => new Extent(envelope.MinY, envelope.MinX, envelope.MaxY, envelope.MaxX);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="meters"></param>
+        public void Expand(double meters)
+        {
+            this.MaxN += meters;
+            this.MaxE += meters;
+            this.MinN -= meters;
+            this.MinE -= meters;
+
+            this.Width = this.MaxE - this.MinE;
+            this.Height = this.MaxN - this.MinN;
+            this.IsEmpty = this.Width <= 0 && this.Height <= 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IExtent Clone()
+            => new Extent(this.MinN, this.MinE, this.MaxN, this.MaxE);
     }
 }

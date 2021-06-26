@@ -64,17 +64,17 @@ namespace CAD.Tests.Entities
         [TestMethod]
         public void T4_SearchEntityByProperties()
         {
-            string cadID = "6849.210";
+            int number = 2160;
 
             ICADEntity result = layer.Search(i =>
             {
-                if (i is CADContour contour && contour.CADId.Equals(cadID))
+                if (i is CADPoint point && point.Number == number)
                     return true;
                 return false;
             }).FirstOrDefault();
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(cadID, (result as CADContour).CADId);
+            Assert.AreEqual(number, (result as CADPoint).Number);
         }
 
         [TestMethod]

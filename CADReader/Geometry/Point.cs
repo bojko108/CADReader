@@ -1,4 +1,5 @@
-﻿using CAD.Nomenclature;
+﻿using BojkoSoft.Transformations;
+using CAD.Entity;
 using RBush;
 using System;
 
@@ -7,63 +8,41 @@ namespace CAD.Geometry
     /// <summary>
     /// Представлява точка
     /// </summary>
-    public class Point : IGeometry, IEquatable<Point>
+    public class Point : IGeometry, IPoint, IEquatable<Point>
     {
         /// <summary>
         /// Уникален идентификатор на обекта - използва се връзка между 
         /// геометрията от пространственият индекс и обекта от CAD файла
         /// </summary>
         public string GUID { get; set; }
-
-        /// <summary>
-        /// Уникален номер на линията
-        /// </summary>
-        public int Number { get; private set; }
-        /// <summary>
-        /// Точност на точката - <see cref="CADPointPrecision"/>
-        /// </summary>
-        public string Precision => CADPointPrecision.Get(this.t);
-        /// <summary>
-        /// Трайно означаване - <see cref="CADPointMarkerType"/>
-        /// </summary>
-        public string MarkerType => CADPointMarkerType.Get(this.o);
-        /// <summary>
-        /// Метод на определяне - <see cref="CADPointMeasurementType"/>
-        /// </summary>
-        public string MeasurementType => CADPointMeasurementType.Get(this.m);
         /// <summary>
         /// Northing в метри (x в CAD файл)
         /// </summary>
-        public double N { get; private set; }
+        public double N { get; set; }
         /// <summary>
         /// Easting в метри (y в CAD файл)
         /// </summary>
-        public double E { get; private set; }
+        public double E { get; set; }
         /// <summary>
         /// Z в метри (h в CAD файл)
         /// </summary>
-        public double Z { get; private set; }
+        public double Z { get; set; }
+        /// <summary>
+        /// Информация за точка от линия
+        /// </summary>
+        public PointInfo PointInfo { get; set; }
+
+        /// <summary>
+        /// Координатна система
+        /// </summary>
+        public CoordinateSystem CoordinateSystem { get; set; }
 
         /// <summary>
         /// Обхват на геометрията - служи при търсене в пространственият индекс
         /// </summary>
         public ref readonly Envelope Envelope => ref _envelope;
-        private readonly Envelope _envelope;
 
-        /// <summary>
-        /// Код за точност на точката (приложение №2)
-        /// </summary>
-        private readonly int t;
-        /// <summary>
-        /// Код за трайно означаване (обр.0220 от Нар.14) 
-        /// (номенклатура за трайно означаване)
-        /// </summary>
-        private readonly int o;
-        /// <summary>
-        /// Код за метод на определяне (обр.0470 от Нар.14) 
-        /// (номенклатура за метод на определяне)
-        /// </summary>
-        private readonly int m;
+        private readonly Envelope _envelope;
 
         /// <summary>
         /// Създава нова точка на координати 0, 0, 0
@@ -91,30 +70,13 @@ namespace CAD.Geometry
             this.E = E;
             this.Z = Z;
 
+            this.CoordinateSystem = CoordinateSystem.Unknown;
+
             // This should be tested:
             // Initializes the extent of this geometry. 
             // Once the extent is calculated it shouldn't change 
             // as it is part of the spatial index
             this._envelope = new Envelope(this.E, this.N, this.E, this.N);
-        }
-
-        /// <summary>
-        /// Създава нова точка по данни от CAD файл
-        /// </summary>
-        /// <param name="values">nl xl yl tl o1 m2</param>
-        public Point(string[] values)
-        {
-            this.Number = int.Parse(values[0]);
-
-            this.N = double.Parse(values[1]);
-            this.E = double.Parse(values[2]);
-            this.Z = 0.0;
-
-            this._envelope = new Envelope(this.E, this.N, this.E, this.N);
-
-            this.t = int.Parse(values[3]);
-            this.o = int.Parse(values[4]);
-            this.m = int.Parse(values[5]);
         }
 
         /// <summary>
@@ -126,7 +88,9 @@ namespace CAD.Geometry
         public static Point operator +(Point referencePoint, Point relativePoint)
             => new Point(referencePoint.N + relativePoint.N, referencePoint.E + relativePoint.E, referencePoint.Z + relativePoint.Z)
             {
-                GUID = relativePoint.GUID
+                GUID = relativePoint.GUID,
+                PointInfo = relativePoint.PointInfo,
+                CoordinateSystem = relativePoint.CoordinateSystem
             };
 
         /// <summary>
@@ -137,7 +101,9 @@ namespace CAD.Geometry
         public static Point operator -(Point referencePoint, Point relativePoint)
             => new Point(referencePoint.N - relativePoint.N, referencePoint.E - relativePoint.E, referencePoint.Z - relativePoint.Z)
             {
-                GUID = relativePoint.GUID
+                GUID = relativePoint.GUID,
+                PointInfo = relativePoint.PointInfo,
+                CoordinateSystem = relativePoint.CoordinateSystem
             };
 
         /// <summary>
@@ -190,5 +156,16 @@ namespace CAD.Geometry
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode() => (N, E, Z).GetHashCode();
+        /// <summary>
+        /// Създава ново копие на този обект
+        /// </summary>
+        /// <returns></returns>
+        public IPoint Clone()
+            => new Point(this.N, this.E, this.Z)
+            {
+                GUID = this.GUID,
+                PointInfo = this.PointInfo,
+                CoordinateSystem = this.CoordinateSystem
+            };
     }
 }

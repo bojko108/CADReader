@@ -33,12 +33,15 @@
     <DocumentationFile>bin\Release\CADReader.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>cadreader.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KDBush, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\KDBush.1.0.11\lib\net461\KDBush.dll</HintPath>
+    </Reference>
     <Reference Include="RBush, Version=2.0.46.0, Culture=neutral, PublicKeyToken=b1d5b814a0c60675, processorArchitecture=MSIL">
       <HintPath>..\packages\RBush.2.0.46\lib\netstandard1.2\RBush.dll</HintPath>
     </Reference>
@@ -54,6 +57,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Transformations, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Transformations.NET.3.0.0\lib\net461\Transformations.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CADConstants.cs" />
@@ -66,12 +72,16 @@
     <Compile Include="Entity\CADText.cs" />
     <Compile Include="Entity\ICADEntity.cs" />
     <Compile Include="Entity\CADPoint.cs" />
+    <Compile Include="Entity\PointInfo.cs" />
     <Compile Include="Geometry\Extent.cs" />
     <Compile Include="Geometry\IGeometry.cs" />
     <Compile Include="Geometry\Point.cs" />
     <Compile Include="Geometry\Polygon.cs" />
     <Compile Include="Geometry\Polyline.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Geometry\CoordinateSystem.cs" />
+    <Compile Include="Internals\LogMessageType.cs" />
+    <Compile Include="Internals\TransformationUtils.cs" />
+    <Compile Include="Internals\Logger.cs" />
     <Compile Include="Nomenclature\CADContentType.cs" />
     <Compile Include="Nomenclature\CADLayerType.cs" />
     <Compile Include="Nomenclature\CADLineBorderType.cs" />
@@ -94,6 +104,5 @@
     <None Include="cadreader.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

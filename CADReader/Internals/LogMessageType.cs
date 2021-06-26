@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CAD
+namespace CAD.Internals
 {
-    internal class Logger
+    internal enum LogMessageType
     {
-
+        Error,
+        Info
     }
 }

@@ -28,6 +28,11 @@ namespace CAD.Geometry
         public double Area => throw new NotImplementedException();
 
         /// <summary>
+        /// Координатна система
+        /// </summary>
+        public CoordinateSystem CoordinateSystem { get; set; }
+
+        /// <summary>
         /// Обхват на геометрията - служи при търсене в пространственият индекс
         /// </summary>
         public ref readonly Envelope Envelope => ref _envelope;
