@@ -2,7 +2,7 @@
 using CAD.Internals;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CADReader.Tests.Internals
+namespace CAD.Tests.Internals
 {
     [TestClass]
     public class TransformationUtilsTests

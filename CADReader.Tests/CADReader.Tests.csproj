@@ -8,7 +8,7 @@
     <ProjectGuid>{0A503B2B-08B1-4379-A995-CAC2ED65141C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CADReader.Tests</RootNamespace>
+    <RootNamespace>CAD.Tests</RootNamespace>
     <AssemblyName>CAD.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -65,6 +65,7 @@
     <Compile Include="CADFileTests.cs" />
     <Compile Include="Entities\CADLayerTests.cs" />
     <Compile Include="Geometry\PointTests.cs" />
+    <Compile Include="Geometry\CADContourTests.cs" />
     <Compile Include="Internals\LoggerTests.cs" />
     <Compile Include="Internals\TransformationUtilsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
