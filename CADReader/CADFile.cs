@@ -350,7 +350,16 @@ namespace CAD
 
                                                 #region Read Contour lines
 
-                                                List<Point> verticesContour = new List<Point>();
+                                                /*
+                                                 * Contours are not created correctly. Vertices should be sorted first!
+                                                 * Each line can have different directions if shared with another contour!
+                                                 * 
+                                                 * 1. Change verticesContour to List<Polyline>
+                                                 * 2. Sort the list so all entities are connected correctly.
+                                                 * 3. Change new Polygon(Points[]) to new Polygon(Polylines[])
+                                                 *    or add a new constructor
+                                                 */
+                                                List<Polyline> contourLines = new List<Polyline>();
 
                                                 while (true)
                                                 {
@@ -382,7 +391,7 @@ namespace CAD
                                                         if (string.IsNullOrWhiteSpace(lineNumber))
                                                             continue;
 
-                                                        CADLine lineContour = layer.Search(e =>
+                                                        CADLine contourLine = layer.Search(e =>
                                                         {
                                                             if (e is CADLine l)
                                                                 return lineNumber.Equals(l.Number.ToString());
@@ -390,14 +399,14 @@ namespace CAD
                                                                 return false;
                                                         }).FirstOrDefault() as CADLine;
 
-                                                        if (lineContour == null)
+                                                        if (contourLine == null)
                                                             continue;
 
-                                                        verticesContour.AddRange((lineContour.Geometry as Polyline).Vertices);
+                                                        contourLines.Add(contourLine.Geometry.CopyGeometry() as Polyline);
                                                     }
                                                 }
 
-                                                Polygon polygon = new Polygon(verticesContour);
+                                                Polygon polygon = new Polygon(contourLines);
                                                 contour.SetGeometry(polygon);
 
                                                 #endregion

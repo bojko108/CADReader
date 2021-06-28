@@ -163,9 +163,14 @@ namespace CAD.Geometry
         public IPoint Clone()
             => new Point(this.N, this.E, this.Z)
             {
-                GUID = this.GUID,
                 PointInfo = this.PointInfo,
                 CoordinateSystem = this.CoordinateSystem
             };
+        /// <summary>
+        /// Създава копие на тази точка
+        /// </summary>
+        /// <returns></returns>
+        public IGeometry CopyGeometry()
+            => this.Clone() as IGeometry;
     }
 }

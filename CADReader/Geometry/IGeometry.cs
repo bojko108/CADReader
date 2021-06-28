@@ -17,6 +17,11 @@ namespace CAD.Geometry
         /// Координатна система
         /// </summary>
         CoordinateSystem CoordinateSystem { get; set; }
+        /// <summary>
+        /// Създава копие на тази геометрия
+        /// </summary>
+        /// <returns></returns>
+        IGeometry CopyGeometry();
     }
 
     /// <summary>

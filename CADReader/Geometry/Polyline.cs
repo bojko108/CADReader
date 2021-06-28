@@ -15,6 +15,14 @@ namespace CAD.Geometry
         /// </summary>
         public string GUID { get; set; }
         /// <summary>
+        /// Начална точка на линията
+        /// </summary>
+        public Point StartPoint => this.Vertices[0];
+        /// <summary>
+        /// Крайна точка на линията
+        /// </summary>
+        public Point EndPoint => this.Vertices[this.Vertices.Count - 1];
+        /// <summary>
         /// Списък с точки, описващи линията
         /// </summary>
         public List<Point> Vertices { get; private set; }
@@ -53,6 +61,17 @@ namespace CAD.Geometry
             this._envelope = new Envelope(double.MaxValue, double.MaxValue, double.MinValue, double.MinValue);
             foreach (Point point in this.Vertices)
                 this._envelope = this._envelope.Extend(point.Envelope);
+        }
+        /// <summary>
+        /// Създава копие на тази линия
+        /// </summary>
+        /// <returns></returns>
+        public IGeometry CopyGeometry()
+        {
+            List<Point> newVertices = new List<Point>();
+            foreach (Point vertex in this.Vertices)
+                newVertices.Add((Point)vertex.CopyGeometry());
+            return new Polyline(newVertices);
         }
     }
 }
