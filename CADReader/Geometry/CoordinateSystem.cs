@@ -28,6 +28,30 @@
         /// </summary>
         BGS_SOFIA = 108501,
         /// <summary>
+        /// Gauss projection based on Hayford ellipsoid
+        /// </summary>
+        BGS_1930_24 = 1083024,
+        /// <summary>
+        /// Gauss projection based on Hayford ellipsoid
+        /// </summary>
+        BGS_1930_27 = 1083027,
+        /// <summary>
+        /// Gauss projection based on Krassovsky ellipsoid
+        /// </summary>
+        BGS_1950_3_24 = 10850324,
+        /// <summary>
+        /// Gauss projection based on Krassovsky ellipsoid
+        /// </summary>
+        BGS_1950_3_27 = 10850327,
+        /// <summary>
+        /// Gauss projection based on Krassovsky ellipsoid
+        /// </summary>
+        BGS_1950_6_21 = 10850621,
+        /// <summary>
+        /// Gauss projection based on Krassovsky ellipsoid
+        /// </summary>
+        BGS_1950_6_27 = 10850627,
+        /// <summary>
         /// ~ Northewest Bulgaria
         /// </summary>
         BGS_1970_K3 = 108703,

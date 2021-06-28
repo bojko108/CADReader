@@ -95,6 +95,7 @@
     <Compile Include="Nomenclature\CADSymbolType.cs" />
     <Compile Include="Nomenclature\CADTextAlignment.cs" />
     <Compile Include="Nomenclature\CADTextType.cs" />
+    <Compile Include="Nomenclature\CADVersion.cs" />
     <Compile Include="Nomenclature\TextContentType.cs" />
     <Compile Include="Nomenclature\TextType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

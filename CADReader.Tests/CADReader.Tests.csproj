@@ -69,6 +69,7 @@
     <Compile Include="Internals\LoggerTests.cs" />
     <Compile Include="Internals\TransformationUtilsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CADFileInfoTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

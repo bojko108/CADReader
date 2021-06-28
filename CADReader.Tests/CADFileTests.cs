@@ -44,7 +44,7 @@ namespace CAD.Tests
 
             CADFileInfo info = test.FileInfo;
             Assert.IsNotNull(info);
-            Assert.AreEqual("4.00", info.Version);
+            Assert.AreEqual(CADVersion.v400, info.Version);
             Assert.AreEqual("37914", info.EKATTE);
             Assert.AreEqual("с.Кокаляне", info.Name);
             Assert.AreEqual("CadIS v4.27", info.Program);
@@ -95,7 +95,7 @@ namespace CAD.Tests
             CADFileInfo info = reader.FileInfo;
 
             Assert.IsNotNull(info);
-            Assert.AreEqual("4.00", info.Version);
+            Assert.AreEqual(CADVersion.v400, info.Version);
             Assert.AreEqual("37914", info.EKATTE);
             Assert.AreEqual("с.Кокаляне", info.Name);
             Assert.AreEqual("CadIS v4.27", info.Program);

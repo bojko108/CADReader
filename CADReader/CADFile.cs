@@ -140,8 +140,9 @@ namespace CAD
                                     switch (key)
                                     {
                                         case CADConstants.VERSION:
-                                            this.FileInfo.Version = line.Substring(separatorIndex + 1);
-                                            if (this.FileInfo.Version.StartsWith("4") == false)
+                                            this.FileInfo.SetVersion(line.Substring(separatorIndex + 1));
+                                            if (this.FileInfo.Version == CADVersion.Unknown
+                                                || this.FileInfo.Version == CADVersion.v200)
                                                 throw new ArgumentException("Only CAD files v4 are supported", "file");
                                             continue;
                                         case CADConstants.EKATTE:
@@ -183,7 +184,7 @@ namespace CAD
                                             northEast = this.CalculateAbsoluteCoordinatesFor((Point)northEast);
                                             continue;
                                         case CADConstants.COORDTYPE:
-                                            this.FileInfo.Coordtype = line.Substring(separatorIndex + 1);
+                                            this.FileInfo.SetCoordtype(line.Substring(separatorIndex + 1));
 
                                             Extent extent = new Extent(
                                                 southWest.N,
@@ -191,7 +192,7 @@ namespace CAD
                                                 northEast.N,
                                                 northEast.E);
 
-                                            TransformationUtils.Instance.SourceProjection = this.SetSourceProjection(this.FileInfo.Coordtype);
+                                            TransformationUtils.Instance.SourceProjection = this.FileInfo.CoordinateSystem;
                                             TransformationUtils.Instance.CalculateTransformationParameters(extent);
 
                                             continue;
